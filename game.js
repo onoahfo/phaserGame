@@ -76,7 +76,11 @@ function itemHandler(player, item) {
   }
   
   if (currentScore < 0){
-      lost = true
+    lost = true
+    if (lost){
+      loosingMessage.text = "YOU LOOSE"
+      player.kill();
+    }
   }
 
   if (currentScore >= winningScore) {
@@ -164,10 +168,6 @@ window.onload = function () {
     if (won) {
       winningMessage.text = "YOU WIN!!!";
     }
-    if (lost){
-      loosingMessage.text = "YOU LOOSE";
-    } 
-    
   }
 
   function render() {
