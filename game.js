@@ -9,19 +9,38 @@ var jumpButton;
 var text;
 var winningMessage;
 var won = false;
-var currentScore = 90;
+var currentScore = 0;
 var winningScore = 100;
 
 // add collectable items to the game
 function addItems() {
   items = game.add.physicsGroup();
-  createItem(375, 300, 'coin');
+  createItem(375, 500, 'coin');
+  createItem(400, 500, 'coin');
+  createItem(20, 500, 'coin');
+  createItem(500, 500, 'coin');
+  createItem(375, 500, 'coin');
+  createItem(500, 500, 'coin');
+  createItem(250, 500, 'coin');
+  createItem(150, 500, 'coin');
+  createItem(460, 500, 'coin');
+  createItem(200, 420, 'poison')
+  createItem(400, 500, 'star')
 }
 
 // add platforms to the game
 function addPlatforms() {
   platforms = game.add.physicsGroup();
-  platforms.create(450, 550, 'platform');
+  platforms.create(-10, 580, 'platform2');
+  platforms.create(160, 580, 'platform2');
+  platforms.create(330, 580, 'platform2');
+  platforms.create(500, 580, 'platform2');
+  platforms.create(670, 580, 'platform2');
+
+  
+  
+
+
   platforms.setAll('body.immovable', true);
 }
 
@@ -43,7 +62,20 @@ function createBadge() {
 // when the player collects an item on the screen
 function itemHandler(player, item) {
   item.kill();
-  currentScore = currentScore + 10;
+  console.log(item.key)
+  // add 10 if item is coin
+  if(item.key === 'coin'){
+    currentScore = currentScore + 10;
+  } else if(item.key === 'poison'){
+    currentScore = currentScore - 20;
+  } else if(item.key ==='star'){
+    currentScore = currentScore + 20;
+  }
+  
+
+  
+ 
+
   if (currentScore === winningScore) {
       createBadge();
   }
@@ -65,20 +97,24 @@ window.onload = function () {
     
     //Load images
     game.load.image('platform', 'assets/platform_1.png');
-    
+    game.load.image('platform2', 'assets/platform_2.png');
+
+
     //Load spritesheets
     game.load.spritesheet('player', 'assets/chalkers.png', 48, 62);
     game.load.spritesheet('coin', 'assets/coin.png', 36, 44);
     game.load.spritesheet('badge', 'assets/badge.png', 42, 54);
+    game.load.spritesheet('poison', 'assets/poison.png', 32, 32);
+    game.load.spritesheet('star', 'assets/star.png', 32, 32)
   }
 
   // initial game set up
   function create() {
-    player = game.add.sprite(50, 600, 'player');
+    player = game.add.sprite(50, 580, 'player');
     player.animations.add('walk');
     player.anchor.setTo(0.5, 1);
     game.physics.arcade.enable(player);
-    player.body.collideWorldBounds = true;
+    player.body.collideWorldBounds = false;
     player.body.gravity.y = 500;
 
     addItems();
@@ -117,7 +153,7 @@ window.onload = function () {
     }
     
     if (jumpButton.isDown && (player.body.onFloor() || player.body.touching.down)) {
-      player.body.velocity.y = -400;
+      player.body.velocity.y = -600;
     }
     // when the player winw the game
     if (won) {
