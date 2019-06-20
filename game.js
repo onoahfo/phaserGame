@@ -11,21 +11,22 @@ var winningMessage;
 var won = false;
 var currentScore = 0;
 var winningScore = 100;
-
+var lost = false;
+var loosingMessage;
 // add collectable items to the game
 function addItems() {
   items = game.add.physicsGroup();
-  createItem(375, 500, 'coin');
-  createItem(400, 500, 'coin');
-  createItem(20, 500, 'coin');
-  createItem(500, 500, 'coin');
-  createItem(375, 500, 'coin');
-  createItem(500, 500, 'coin');
-  createItem(250, 500, 'coin');
-  createItem(150, 500, 'coin');
-  createItem(460, 500, 'coin');
-  createItem(200, 420, 'poison')
-  createItem(400, 500, 'star')
+  createItem(100, 400, 'coin');
+  createItem(150, 400, 'coin');
+  createItem(200, 400, 'coin');
+  createItem(250, 400, 'coin');
+  createItem(300, 400, 'coin');
+  createItem(350, 400, 'coin');
+  createItem(400, 400, 'coin');
+  createItem(450, 400, 'coin');
+  createItem(500, 400, 'coin');
+  createItem(550, 500, 'poison')
+  createItem(600, 500, 'star')
 }
 
 // add platforms to the game
@@ -66,17 +67,19 @@ function itemHandler(player, item) {
   // add 10 if item is coin
   if(item.key === 'coin'){
     currentScore = currentScore + 10;
-  } else if(item.key === 'poison'){
+  } 
+  if(item.key === 'poison'){
     currentScore = currentScore - 20;
-  } else if(item.key ==='star'){
+  } 
+  if(item.key ==='star'){
     currentScore = currentScore + 20;
   }
   
+  if (currentScore < 0){
+      lost = true
+  }
 
-  
- 
-
-  if (currentScore === winningScore) {
+  if (currentScore >= winningScore) {
       createBadge();
   }
 }
@@ -125,6 +128,8 @@ window.onload = function () {
     text = game.add.text(16, 16, "SCORE: " + currentScore, { font: "bold 24px Arial", fill: "white" });
     winningMessage = game.add.text(game.world.centerX, 275, "", { font: "bold 48px Arial", fill: "white" });
     winningMessage.anchor.setTo(0.5, 1);
+    loosingMessage = game.add.text(game.world.centerX, 275, "", { font: "bold 48px Arial", fill: "white" });
+    loosingMessage.anchor.setTo(0.5, 1);
   }
 
   // while the game is running
@@ -153,12 +158,16 @@ window.onload = function () {
     }
     
     if (jumpButton.isDown && (player.body.onFloor() || player.body.touching.down)) {
-      player.body.velocity.y = -600;
+      player.body.velocity.y = -400;
     }
     // when the player winw the game
     if (won) {
       winningMessage.text = "YOU WIN!!!";
     }
+    if (lost){
+      loosingMessage.text = "YOU LOOSE";
+    } 
+    
   }
 
   function render() {
